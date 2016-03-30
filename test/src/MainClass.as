@@ -1,6 +1,8 @@
 
 package
 {
+	
+	
 	import FileLoad;
 	
 	import HashTable;
@@ -9,9 +11,11 @@ package
 	
 	public class MainClass
 	{
-		private var mFileLoad : FileLoad = new FileLoad("D:\\test\\test\\data.txt");		
+		private var mFileLoad : FileLoad = new FileLoad("D:\\test-1\\test\\data.txt");		
 		private var mHashTable : HashTable;
 		private var m_MyScroe : Number;
+		
+		
 		public function MainClass()
 		{
 		}
@@ -49,6 +53,7 @@ package
 			
 			var TempVector : Vector.<PlayerClass> = new Vector.<PlayerClass>;
 			var Tempcnt : int = 0;
+			
 			for(var mVar : int =0;mVar < 5; mVar++)
 			{
 				if(PreNum == HashTable.m_MatchedPlayer[mVar].HashKey || mVar == 0)

@@ -122,13 +122,16 @@ package
 				{
 					GroupType = 1;
 					HighTemp++;
+					if(MyKey+HighTemp > 11)
+						continue;
 					m_HashTable[MyKey+HighTemp].OutputPlayer();
-					
 				}
 				else
 				{
 					GroupType = -1;
 					LowTemp--;
+					if(MyKey+LowTemp <= 0)
+						continue;
 					m_HashTable[MyKey+LowTemp].OutputPlayer();
 					
 				}
