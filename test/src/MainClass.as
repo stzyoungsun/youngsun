@@ -11,7 +11,7 @@ package
 	
 	public class MainClass
 	{
-		private var mFileLoad : FileLoad = new FileLoad("D:\\test-1\\test\\data.txt");		
+		private var mFileLoad : FileLoad = new FileLoad("data.txt");		
 		private var mHashTable : HashTable;
 		private var m_MyScroe : Number;
 		

@@ -26,7 +26,7 @@ package
 			var file : File = new File();
 			var stream : FileStream = new FileStream();
 			
-			file = File.desktopDirectory.resolvePath(fileName);
+			file = File.applicationDirectory.resolvePath(fileName);
 			
 			if(file.exists)
 			{
