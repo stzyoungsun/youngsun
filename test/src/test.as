@@ -7,6 +7,8 @@ package
 	import flash.text.TextFieldType;
 	import flash.ui.Keyboard;
 	
+	import mx.core.ButtonAsset;
+	
 	import HashTable;
 	
 	import MainClass;
@@ -23,7 +25,6 @@ package
 		private var myText:String = ""; 
 		public function test()
 		{
-			
 			myTextBox_FirstOutput.width = 100;
 			myTextBox_FirstOutput.height = 100;
 			addChild(myTextBox_FirstOutput);
@@ -31,10 +32,11 @@ package
 			
 			myTextBox_Input.type = TextFieldType.INPUT;
 			myTextBox_Input.background = true;
-			addChild(myTextBox_Input); 
+			addChild(myTextBox_Input);
+			myTextBox_Input.border = true;
 			
-			myTextBox_Input.width = 300;
-			myTextBox_Input.height = 50;
+			myTextBox_Input.width = 100;
+			myTextBox_Input.height = 20;
 			myTextBox_Input.x = 100;
 			myTextBox_Input.addEventListener(KeyboardEvent.KEY_DOWN,reportKeyDown);
 		
@@ -43,8 +45,12 @@ package
 		{
 			if(event.keyCode == Keyboard.ENTER)
 			{
+			
 				var Myscore : String = myTextBox_Input.text;
+				Myscore = CheckScroe(Myscore);
 				MainClass.m_MyScroe = parseInt(Myscore);
+				if(MainClass.m_MyScroe <= 0) return;
+				
 				mMainclass.initalize();
 				mMainclass.Progress();
 				
@@ -52,16 +58,31 @@ package
 				myTextBox_SecondOutput.width = 300;
 				myTextBox_SecondOutput.height = 500;
 				myTextBox_SecondOutput.y = 30;
+				
 				Text_Out();
 				myTextBox_SecondOutput.text = myText;
 			}
 				
 		}
-	
+		
+		public function CheckScroe(Score : String) : String
+		{
+			
+			var strTemp : Array = Score.split(/,|\./);
+			var ResultScore : String ="";
+			for(var mVar : Number = 0; mVar < strTemp.length; mVar++)
+			{
+				ResultScore+=strTemp[mVar];
+			}
+			
+			trace(ResultScore);
+			
+			return ResultScore;
+		}
 		public function Text_Out() : void
 		{
 			//윈도우 창에 출력 하기 위한 함수
-		
+			myText = " ";
 			var PreNum : int = 0;
 			var GroupCount : int =0;
 			var TempVector : Vector.<PlayerClass> = new Vector.<PlayerClass>;

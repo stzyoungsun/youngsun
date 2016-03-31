@@ -31,7 +31,6 @@ package
 		public function HashTable(Player :Vector.<PlayerClass>,PlyerCount : Number, MyScore : Number )
 		{
 			//객체에 저장 된 데이터를 이용한 생성자
-			
 			m_Player = Player;
 			m_PlayerCount = PlyerCount;
 			m_MyScore = MyScore;
