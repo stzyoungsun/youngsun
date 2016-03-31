@@ -1,33 +1,67 @@
 package
 {
 	import flash.display.Sprite;
+	import flash.events.KeyboardEvent;
+	import flash.events.TextEvent;
 	import flash.text.TextField;
+	import flash.text.TextFieldType;
+	import flash.ui.Keyboard;
+	
+	import HashTable;
 	
 	import MainClass;
-	import HashTable;
+	
 	import PlayerClass;
 	
 	public class test extends Sprite
 	{
-		private var myTextBox:TextField = new TextField(); 
+		private var myTextBox_FirstOutput:TextField = new TextField(); 		//"input You're Score" 출력 필드
+		private var myTextBox_Input:TextField = new TextField(); 			//텍스트 입력 출력 필드
+		private var myTextBox_SecondOutput:TextField = new TextField(); 	//결과 값 출력 필드
+		
+		private var mMainclass : MainClass = new MainClass();
 		private var myText:String = ""; 
 		public function test()
 		{
-			var mMainclass : MainClass = new MainClass();
-			mMainclass.initalize();
-			mMainclass.Progress();
-				
-			addChild(myTextBox); 
-			Text_Out();	//윈도우 창에 출력
-			myTextBox.width = 600;
-			myTextBox.height = 800;
-			myTextBox.text = myText; 
-		}
+			
+			myTextBox_FirstOutput.width = 100;
+			myTextBox_FirstOutput.height = 100;
+			addChild(myTextBox_FirstOutput);
+			myTextBox_FirstOutput.text = "Input You're Score : ";
+			
+			myTextBox_Input.type = TextFieldType.INPUT;
+			myTextBox_Input.background = true;
+			addChild(myTextBox_Input); 
+			
+			myTextBox_Input.width = 300;
+			myTextBox_Input.height = 50;
+			myTextBox_Input.x = 100;
+			myTextBox_Input.addEventListener(KeyboardEvent.KEY_DOWN,reportKeyDown);
 		
+		}
+		public function reportKeyDown(event : KeyboardEvent) : void
+		{
+			if(event.keyCode == Keyboard.ENTER)
+			{
+				var Myscore : String = myTextBox_Input.text;
+				MainClass.m_MyScroe = parseInt(Myscore);
+				mMainclass.initalize();
+				mMainclass.Progress();
+				
+				addChild(myTextBox_SecondOutput);
+				myTextBox_SecondOutput.width = 300;
+				myTextBox_SecondOutput.height = 500;
+				myTextBox_SecondOutput.y = 30;
+				Text_Out();
+				myTextBox_SecondOutput.text = myText;
+			}
+				
+		}
+	
 		public function Text_Out() : void
 		{
 			//윈도우 창에 출력 하기 위한 함수
-			
+		
 			var PreNum : int = 0;
 			var GroupCount : int =0;
 			var TempVector : Vector.<PlayerClass> = new Vector.<PlayerClass>;
