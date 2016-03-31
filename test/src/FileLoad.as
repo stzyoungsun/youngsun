@@ -3,7 +3,7 @@ package
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
-	import flash.utils.ByteArray;
+
 	
 	import PlayerClass;
 	
@@ -32,11 +32,8 @@ package
 			{
 				stream.open(file,FileMode.READ);
 				m_data = stream.readMultiByte(stream.bytesAvailable,"utf-8");
-				m_data += '&';
-				//trace(m_data);
-				
+				m_data += '&';		//문자열에 마지막을 표시		
 			}
-			
 			else
 			{
 				trace("File Open Error");
@@ -60,7 +57,7 @@ package
 				{
 					switch(ComaCnt)
 					{
-						case  0:
+						case 0:
 							m_Player[PlayerCnt] = new PlayerClass();
 							if(strTemp.charAt(cntTemp) == ',')
 								m_Player[PlayerCnt].ID = 0;
@@ -73,14 +70,14 @@ package
 							else
 								m_Player[PlayerCnt].Name =  strTemp;
 							break;
-						case  2:
+						case 2:
 					
 							if(strTemp.charAt(cntTemp) == ',')
 								m_Player[PlayerCnt].Score = 0;
 							else
 								m_Player[PlayerCnt].Score =  parseInt(strTemp);
 							break;
-						case  3:
+						case 3:
 						
 							if(strTemp.charAt(cntTemp) == ',')
 								m_Player[PlayerCnt].WinCount = 0;
@@ -105,7 +102,7 @@ package
 				}
 				else 
 				{
-					if(ComaCnt == 4)
+					if(ComaCnt == 4)	//마지막 LoseCount 부분에서 공백이나, 개행문자, 쓰레기값들을 걸러네기 위한 부분
 					{
 						while(m_data.charAt(cnt) == ' ')
 						{
@@ -115,15 +112,13 @@ package
 						while(m_data.charAt(cnt) >= '0' && m_data.charAt(cnt) <= '9')
 						{
 							strTemp += m_data.charAt(cnt++);
-							
 						}
+						
 						ComaCnt++;
 					}
 					else
 						strTemp += m_data.charAt(cnt++);
 				}
-					
-				
 			}
 		}
 	

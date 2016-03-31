@@ -2,7 +2,6 @@
 package
 {
 	import flash.utils.Dictionary;
-	
 	import PlayerClass;
 	import Hash_Value;
 	
@@ -26,8 +25,6 @@ package
 		
 		private var m_HashTable : Dictionary = new Dictionary();
 		
-	
-		
 		public static var m_MatchedCount : Number = 0;
 		public static var m_MatchedPlayer:Vector.<PlayerClass> = new Vector.<PlayerClass>;
 		
@@ -38,20 +35,12 @@ package
 			m_Player = Player;
 			m_PlayerCount = PlyerCount;
 			m_MyScore = MyScore;
-			
-			for(var mVar:int = 0; mVar<m_PlayerCount;mVar++)	//데이터가 잘 입력 되었는지 테스트 (빈 공간 공백 처리)
-			{
-				trace(m_Player[mVar].ID);
-				trace(m_Player[mVar].Name);
-				trace(m_Player[mVar].Score);
-				trace(m_Player[mVar].WinCount);
-				trace(m_Player[mVar].LoseCount);
-			}
-			
 		}
+		
 		public function Insert_Data(): void
 		{
 			//각각 Key 값에 맞는 그룹에 데이터 저장 (오름차순 저장)
+			
 			for(var mVar:int = 0; mVar<m_PlayerCount;mVar++)	
 			{
 				m_Player[mVar].HashKey = Hashing(m_Player[mVar].Score);
@@ -90,16 +79,8 @@ package
 					case 11:
 						group11.InsertSort(m_Player[mVar],m_MyScore);
 						break;
-					
-				}
-				
+				}	
 			}
-			
-			trace(m_HashTable[4].GetGroup()[0].Score);
-			trace(m_HashTable[4].GetGroup()[1].Score);
-			trace(m_HashTable[5].GetGroup()[0].Score);
-			trace(m_HashTable[5].GetGroup()[1].Score);
-			trace(m_HashTable[1].GetGroup()[0].Score);
 		}
 		
 		public function Matched() : void
@@ -113,6 +94,8 @@ package
 			
 			while(m_MatchedCount < 5)
 			{
+				if(HighTemp > 13) break;
+				
 				if(GroupType == -99)
 				{
 					GroupType = 0;
@@ -136,17 +119,13 @@ package
 					
 				}
 			}
-			for(var mVar : int = 0; mVar<5; mVar++)
-			{
-				trace(m_MatchedPlayer[mVar].Name);
-			}
 		}
 		
 		public function Hashing(PlayerScore : Number) : int
 		{
 			//플레이어 점수에 따라 Hash Key 설정
 			var GroupNum : int = 0;
-			
+			 
 			if(PlayerScore <= 0)
 				return -1;
 			
@@ -177,8 +156,6 @@ package
 			m_HashTable[9] = group9;
 			m_HashTable[10] = group10;
 			m_HashTable[11] = group11;
-			
-		
 		}
 	}
 }

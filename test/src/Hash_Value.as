@@ -10,9 +10,6 @@ package
 		private var m_HashValue:Vector.<PlayerClass> = new Vector.<PlayerClass>;
 		private var m_InsertCount : Number = 0;
 		
-		//private var m_MatchedPlayer:Vector.<PlayerClass> = new Vector.<PlayerClass>;
-		//private var m_MatchedCount : int = 0;
-		
 		public function Hash_Value()
 		{
 			
@@ -54,6 +51,7 @@ package
 			for(var mVar : int = 0; mVar < m_InsertCount; mVar++)
 			{
 				if(HashTable.m_MatchedCount == 5) return;
+				
 				HashTable.m_MatchedPlayer[HashTable.m_MatchedCount++] = m_HashValue[mVar];
 			}
 				
