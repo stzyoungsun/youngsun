@@ -9,17 +9,17 @@ package
 	
 	public class FileLoad
 	{
-		private var m_data : String;
-		private var m_Player:Vector.<PlayerClass> = new Vector.<PlayerClass>;
-		private var m_PlayerCnt : Number = 0;
+		private var _savePlayerData : String;
+		private var _vetorPlayer:Vector.<PlayerClass> = new Vector.<PlayerClass>;
+		private var _countPlayer : Number = 0;
 		
-		public  function GetData() : Vector.<PlayerClass>
+		public  function getData() : Vector.<PlayerClass>
 		{
-			return m_Player;
+			return _vetorPlayer;
 		}
-		public function GetPlayerCount() : Number
+		public function getPlayerCount() : Number
 		{
-			return m_PlayerCnt;
+			return _countPlayer;
 		}
 		/**
 		 * 
@@ -37,8 +37,8 @@ package
 			if(file.exists)
 			{
 				stream.open(file,FileMode.READ);
-				m_data = stream.readMultiByte(stream.bytesAvailable,"utf-8");
-				m_data += '&';		//문자열에 마지막을 표시		
+				_savePlayerData = stream.readMultiByte(stream.bytesAvailable,"utf-8");
+				_savePlayerData += '&';		//문자열에 마지막을 표시		
 			}
 			else
 			{
@@ -54,71 +54,71 @@ package
 		 * Nmae은 아무 값이나 올 수 있음 (개행 문자 가능)
 		 * # 개행 문자나, 공백 문자 등의 예외 처리
 		 */		
-		public function DataSave() : void
+		public function saveData() : void
 		{
 			//','으로 문자열 쪼개어 객체에 저장
 			var cnt :Number= 1;
 			var cntTemp : Number = 1;
-			var ComaCnt : Number = 0;
+			var countComa : Number = 0;
 			var strTemp : String = " ";
 			
-			while(m_data.charAt(cnt) != '&')
+			while(_savePlayerData.charAt(cnt) != '&')
 			{
-				if(m_data.charAt(cnt) == ',' || ComaCnt == 5)
+				if(_savePlayerData.charAt(cnt) == ',' || countComa == 5)
 				{
-					switch(ComaCnt)
+					switch(countComa)
 					{
 						case 0:
-							m_Player[m_PlayerCnt] = new PlayerClass();
+							_vetorPlayer[_countPlayer] = new PlayerClass();
 							if(strTemp.charAt(cntTemp) == ',')
-								m_Player[m_PlayerCnt].ID = 0;
+								_vetorPlayer[_countPlayer].ID = 0;
 							else
-								m_Player[m_PlayerCnt].ID =  parseInt(strTemp);
+								_vetorPlayer[_countPlayer].ID =  parseInt(strTemp);
 							break;
 						case 1:
 							if(strTemp == " ")
-								m_Player[m_PlayerCnt].Name = " ";
+								_vetorPlayer[_countPlayer].Name = " ";
 							else
-								m_Player[m_PlayerCnt].Name =  strTemp;
+								_vetorPlayer[_countPlayer].Name =  strTemp;
 							break;
 						case 2:
 							if(strTemp.charAt(cntTemp) == ',')
-								m_Player[m_PlayerCnt].Score = 0;
+								_vetorPlayer[_countPlayer].Score = 0;
 							else
-								m_Player[m_PlayerCnt].Score =  parseInt(strTemp);
+								_vetorPlayer[_countPlayer].Score =  parseInt(strTemp);
 							break;
 						case 3:
 							if(strTemp.charAt(cntTemp) == ',')
-								m_Player[m_PlayerCnt].WinCount = 0;
+								_vetorPlayer[_countPlayer].WinCount = 0;
 							else
-								m_Player[m_PlayerCnt].WinCount =  parseInt(strTemp);
+								_vetorPlayer[_countPlayer].WinCount =  parseInt(strTemp);
 							break;
 						default:
 							if(strTemp.charAt(cntTemp) == ',')
-								m_Player[m_PlayerCnt].LoseCount = 0;
+								_vetorPlayer[_countPlayer].LoseCount = 0;
 							else
-								m_Player[m_PlayerCnt].LoseCount =  parseInt(strTemp);
-							m_PlayerCnt++;
-							ComaCnt = -1;
+								_vetorPlayer[_countPlayer].LoseCount =  parseInt(strTemp);
+							_countPlayer++;
+							countComa = -1;
 							break;
 					}
-					if(ComaCnt != -1)
+					if(countComa != -1)
 						cnt++;
 					
-					ComaCnt++;
+					countComa++;
 					strTemp = " ";
 				}
 				else 
 				{
-					if(ComaCnt == 0 || ComaCnt == 2 || ComaCnt == 3 || ComaCnt == 4)	//ID, Score, Wincount, LoseCount 숫자만 와야 할 경우
+					if(countComa == 0 || countComa == 2 || countComa == 3 || countComa == 4)	//ID, Score, Wincount, LoseCount 숫자만 와야 할 경우
 					{
-						if(ComaCnt == 4) ComaCnt++;
-						while(m_data.charAt(cnt) != ',')
+						if(countComa == 4) countComa++;
+						while(_savePlayerData.charAt(cnt) != ',')
 						{
-							if(m_data.charAt(cnt) >= '0' && m_data.charAt(cnt) <= '9')
-								strTemp += m_data.charAt(cnt);
+							if(_savePlayerData.charAt(cnt) >= '0' && _savePlayerData.charAt(cnt) <= '9')
+								strTemp += _savePlayerData.charAt(cnt);
 							
-							if(m_data.charAt(cnt++) == '\n')
+							if(_savePlayerData.charAt(cnt++) == '\n')
 							{
 								
 								break;
@@ -127,9 +127,9 @@ package
 					}
 					else
 					{
-						while(m_data.charAt(cnt) != ',')		//Name 부분
+						while(_savePlayerData.charAt(cnt) != ',')		//Name 부분
 						{
-							strTemp += m_data.charAt(cnt++);
+							strTemp += _savePlayerData.charAt(cnt++);
 						}
 					}
 				}

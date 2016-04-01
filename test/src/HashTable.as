@@ -11,12 +11,12 @@ package
 	
 	public class HashTable
 	{
-		private var m_HashTable : Dictionary = new Dictionary();
-		private var m_Group :Vector.<Hash_Value> = new Vector.<Hash_Value>;
+		private var _hashTable : Dictionary = new Dictionary();
+		private var _group :Vector.<Hash_Value> = new Vector.<Hash_Value>;
 		
-		private var m_Player:Vector.<PlayerClass> = new Vector.<PlayerClass>;
-		private var m_InputScore : Number;
-		private var m_PlayerCount : Number;
+		private var _vetorPlayer:Vector.<PlayerClass> = new Vector.<PlayerClass>;
+		private var _inputScore : Number;
+		private var _countPlayer : Number;
 		
 		public static var Static_MatchedCount : Number = 0;
 		public static var Static_MatchedPlayer:Vector.<PlayerClass> = new Vector.<PlayerClass>;
@@ -30,18 +30,18 @@ package
 		public function HashTable(Player :Vector.<PlayerClass>,PlyerCount : Number, InputScore : Number )
 		{
 			//객체에 저장 된 데이터를 이용한 생성자
-			m_Player = Player;
-			m_PlayerCount = PlyerCount;
-			m_InputScore = InputScore;
+			_vetorPlayer = Player;
+			_countPlayer = PlyerCount;
+			_inputScore = InputScore;
 		}
 		
 		public function Insert_Data(): void
 		{
 			//각각 Key 값에 맞는 그룹에 데이터 저장 (오름차순 저장)
-			for(var mVar:int = 0; mVar<m_PlayerCount;mVar++)	
+			for(var mVar:int = 0; mVar<_countPlayer;mVar++)	
 			{
-				m_Player[mVar].HashKey = Hashing(m_Player[mVar].Score);
-				m_Group[m_Player[mVar].HashKey-1].InsertSort(m_Player[mVar],m_InputScore);
+				_vetorPlayer[mVar].HashKey = Hashing(_vetorPlayer[mVar].Score);
+				_group[_vetorPlayer[mVar].HashKey-1].insertSort(_vetorPlayer[mVar],_inputScore);
 			}
 		}
 		
@@ -49,43 +49,43 @@ package
 		{
 			//사용자가 입력 한 점수에 따라 총 5명의 플레이어 매칭
 			
-			var GroupType : int = -99;
-			var InputDataKey : int = Hashing(m_InputScore);
-			var HighTemp : int = 0;
-			var LowTemp : int = 0;
+			var typeGroup : int = -99;
+			var inputDataKey : int = Hashing(_inputScore);
+			var highTemp : int = 0;
+			var lowTemp : int = 0;
 			
 			while(Static_MatchedCount < Define.MAX_MATCHED_COUNT)
 			{
-				if(HighTemp > 11) break;
+				if(highTemp > 11) break;
 				
-				if(GroupType == -99)
+				if(typeGroup == -99)
 				{
-					GroupType = 0;
-					if(m_HashTable[InputDataKey].GetInsertCount() == 0)		//Group내에 플레이어가 없을 경우
+					typeGroup = 0;
+					if(_hashTable[inputDataKey].getInsertCount() == 0)		//Group내에 플레이어가 없을 경우
 						continue;
-					m_HashTable[InputDataKey].OutputPlayer();
+					_hashTable[inputDataKey].outputPlayer();
 				}
-				else if(GroupType == 0 || GroupType == -1)
+				else if(typeGroup == 0 || typeGroup == -1)
 				{
-					GroupType = 1;
-					HighTemp++;
+					typeGroup = 1;
+					highTemp++;
 					
-					if(InputDataKey+HighTemp > Define.MAX_GROUP_COUNT)
+					if(inputDataKey+highTemp > Define.MAX_GROUP_COUNT)
 						continue;
-					if(m_HashTable[InputDataKey+HighTemp].GetInsertCount() == 0)	//Group내에 플레이어가 없을 경우 
+					if(_hashTable[inputDataKey+highTemp].getInsertCount() == 0)	//Group내에 플레이어가 없을 경우 
 						continue;
-					m_HashTable[InputDataKey+HighTemp].OutputPlayer();
+					_hashTable[inputDataKey+highTemp].outputPlayer();
 				}
 				else
 				{
-					GroupType = -1;
-					LowTemp--;
+					typeGroup = -1;
+					lowTemp--;
 					
-					if(InputDataKey+LowTemp <= 0)
+					if(inputDataKey+lowTemp <= 0)
 						continue;
-					if(m_HashTable[InputDataKey+LowTemp].GetInsertCount() == 0)	//Group내에 플레이어가 없을 경우 
+					if(_hashTable[inputDataKey+lowTemp].getInsertCount() == 0)	//Group내에 플레이어가 없을 경우 
 						continue;
-					m_HashTable[InputDataKey+LowTemp].OutputPlayer();
+					_hashTable[inputDataKey+lowTemp].outputPlayer();
 					
 				}
 			}
@@ -100,22 +100,22 @@ package
 		public function Hashing(PlayerScore : Number) : int
 		{
 			
-			var GroupNum : int = 0;
+			var groupNum : int = 0;
 			 
 			if(PlayerScore <= 0)
 				return -1;
 			
 			if(PlayerScore%Define.GROUP_RANGE == 0)
 			{
-				GroupNum = PlayerScore/Define.GROUP_RANGE;
-				if(GroupNum > Define.MAX_GROUP_COUNT) GroupNum = Define.MAX_GROUP_COUNT;
+				groupNum = PlayerScore/Define.GROUP_RANGE;
+				if(groupNum > Define.MAX_GROUP_COUNT) groupNum = Define.MAX_GROUP_COUNT;
 			}
 			else
 			{
-				GroupNum = (PlayerScore/Define.GROUP_RANGE)+1;
-				if(GroupNum > Define.MAX_GROUP_COUNT) GroupNum = Define.MAX_GROUP_COUNT;
+				groupNum = (PlayerScore/Define.GROUP_RANGE)+1;
+				if(groupNum > Define.MAX_GROUP_COUNT) groupNum = Define.MAX_GROUP_COUNT;
 			}
-			return GroupNum;
+			return groupNum;
 		}
 		
 		public function Create_HashTable() : void
@@ -123,8 +123,8 @@ package
 			//1~11번의 HashTable 생성
 			for(var mVar : int = 0; mVar<Define.MAX_GROUP_COUNT;mVar++)
 			{
-				m_Group[mVar] = new Hash_Value();
-				m_HashTable[mVar+1] = m_Group[mVar];
+				_group[mVar] = new Hash_Value();
+				_hashTable[mVar+1] = _group[mVar];
 			}
 				
 			

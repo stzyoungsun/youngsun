@@ -10,28 +10,28 @@ package
 	
 	public class test extends Sprite
 	{
-		private var	TextBox_FirstOutput:TextField = new TextField(); 		//"input You're Score" 출력 필드.
-		private var TextBox_Input:TextField = new TextField(); 			//텍스트 입력 출력 필드
-		private var TextBox_SecondOutput:TextField = new TextField(); 	//결과 값 출력 필드
+		private var	_firstOutputTextBox:TextField = new TextField(); 		//"input You're Score" 출력 필드.
+		private var _inputTextBox:TextField = new TextField(); 			//텍스트 입력 출력 필드
+		private var _secondOutputTextBox:TextField = new TextField(); 	//결과 값 출력 필드
 		
-		private var mMainclass : MainClass = new MainClass();
+		private var _mainClass : MainClass = new MainClass();
 		
 		public function test()
 		{
-			TextBox_FirstOutput.width = 100;
-			TextBox_FirstOutput.height = 100;
-			addChild(TextBox_FirstOutput);
-			TextBox_FirstOutput.text = "Input You're Score : ";
+			_firstOutputTextBox.width = 100;
+			_firstOutputTextBox.height = 100;
+			addChild(_firstOutputTextBox);
+			_firstOutputTextBox.text = "Input You're Score : ";
 			
-			TextBox_Input.type = TextFieldType.INPUT;
-			TextBox_Input.background = true;
-			addChild(TextBox_Input);
-			TextBox_Input.border = true;
+			_inputTextBox.type = TextFieldType.INPUT;
+			_inputTextBox.background = true;
+			addChild(_inputTextBox);
+			_inputTextBox.border = true;
 			
-			TextBox_Input.width = 100;
-			TextBox_Input.height = 20;
-			TextBox_Input.x = 100;
-			TextBox_Input.addEventListener(KeyboardEvent.KEY_DOWN,reportKeyDown);
+			_inputTextBox.width = 100;
+			_inputTextBox.height = 20;
+			_inputTextBox.x = 100;
+			_inputTextBox.addEventListener(KeyboardEvent.KEY_DOWN,reportKeyDown);
 		
 		}
 		/**
@@ -43,21 +43,21 @@ package
 		{
 			if(event.keyCode == Keyboard.ENTER)		//Enter 키가 눌렸을 경우
 			{
-				var Inputscore : String = TextBox_Input.text;
-				Inputscore = CheckScroe(Inputscore);
-				MainClass.m_InputScroe = parseInt(Inputscore);
-				if(MainClass.m_InputScroe <= 0) return;
+				var Inputscore : String = _inputTextBox.text;
+				Inputscore = checkScroe(Inputscore);
+				MainClass.inputScroe = parseInt(Inputscore);
+				if(MainClass.inputScroe <= 0) return;
 				
-				mMainclass.initalize();
-				mMainclass.Progress();
-				mMainclass.Render();
+				_mainClass.initalize();
+				_mainClass.progress();
+				_mainClass.render();
 				
-				addChild(TextBox_SecondOutput);
-				TextBox_SecondOutput.width = 500;
-				TextBox_SecondOutput.height = 500;
-				TextBox_SecondOutput.y = 30;
+				addChild(_secondOutputTextBox);
+				_secondOutputTextBox.width = 500;
+				_secondOutputTextBox.height = 500;
+				_secondOutputTextBox.y = 30;
 				
-				TextBox_SecondOutput.text = MainClass.OutText;
+				_secondOutputTextBox.text = MainClass.saveTextBox;
 			}
 		}
 		/**
@@ -66,7 +66,7 @@ package
 		 * @return 순수 하게 숫자로만 이루어진 점수 값
 		 * 
 		 */		
-		public function CheckScroe(Score : String) : String		//사용자가 입력 한 점수에 있는 ',' '.'를 제거하기 위해서
+		public function checkScroe(Score : String) : String		//사용자가 입력 한 점수에 있는 ',' '.'를 제거하기 위해서
 		{
 			var strTemp : Array = Score.split(/,|\./);
 			var ResultScore : String ="";
