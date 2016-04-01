@@ -21,7 +21,7 @@ package
 		}
 		public function InsertSort(Player : PlayerClass, MyScore : Number) : void 
 		{
-			//객체에 데이터와 사용자가 입력한 점수의 차이에 따른 정렬 후 그룹에 저장
+			//동일 한 그룹에 다른 값이 왔을 경우 사용자의 점수 차이를 이용하여 오름 차순으로 Vector에 삽입
 			
 			m_InsertCount++;
 			Player.ScoreGap = Math.abs(Player.Score - MyScore);
@@ -47,7 +47,7 @@ package
 		}
 		public function OutputPlayer() : void
 		{
-			//Matching이 끝난 데이터 출력
+			//Matching이 끝난 데이터를 MachedPlayer 배열에 저장
 			for(var mVar : int = 0; mVar < m_InsertCount; mVar++)
 			{
 				if(HashTable.m_MatchedCount == 5) return;

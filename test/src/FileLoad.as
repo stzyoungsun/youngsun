@@ -43,15 +43,12 @@ package
 		public function DataSave() : void
 		{
 			//','으로 문자열 쪼개어 객체에 저장
-			
 			var cnt :Number= 1;
 			var cntTemp : Number = 1;
 			var ComaCnt : Number = 0;
-			
-			
 			var strTemp : String = " ";
 			
-			while(m_data.charAt(cnt-1) != '&')
+			while(m_data.charAt(cnt) != '&')
 			{
 				if(m_data.charAt(cnt) == ',' || ComaCnt == 5)
 				{
@@ -71,29 +68,24 @@ package
 								m_Player[PlayerCnt].Name =  strTemp;
 							break;
 						case 2:
-					
 							if(strTemp.charAt(cntTemp) == ',')
 								m_Player[PlayerCnt].Score = 0;
 							else
 								m_Player[PlayerCnt].Score =  parseInt(strTemp);
 							break;
 						case 3:
-						
 							if(strTemp.charAt(cntTemp) == ',')
 								m_Player[PlayerCnt].WinCount = 0;
 							else
 								m_Player[PlayerCnt].WinCount =  parseInt(strTemp);
 							break;
 						default:
-							
 							if(strTemp.charAt(cntTemp) == ',')
 								m_Player[PlayerCnt].LoseCount = 0;
 							else
 								m_Player[PlayerCnt].LoseCount =  parseInt(strTemp);
-							
 							PlayerCnt++;
 							ComaCnt = -1;
-							
 							break;
 					}
 					cnt++;
@@ -102,22 +94,27 @@ package
 				}
 				else 
 				{
-					if(ComaCnt == 4)	//마지막 LoseCount 부분에서 공백이나, 개행문자, 쓰레기값들을 걸러네기 위한 부분
+					if(ComaCnt == 0 || ComaCnt == 2 || ComaCnt == 3 || ComaCnt == 4)	//ID, Score, Wincount, LoseCount 숫자만 와야 할 경우
 					{
-						while(m_data.charAt(cnt) == ' ')
+						if(ComaCnt == 4) ComaCnt++;
+						while(m_data.charAt(cnt) != ',')
 						{
-							strTemp += m_data.charAt(cnt++);
+							if(m_data.charAt(cnt) >= '0' && m_data.charAt(cnt) <= '9')
+								strTemp += m_data.charAt(cnt);
+							
+							if(m_data.charAt(cnt++) == '\n')
+							{
+								break;
+							}
 						}
-						
-						while(m_data.charAt(cnt) >= '0' && m_data.charAt(cnt) <= '9')
-						{
-							strTemp += m_data.charAt(cnt++);
-						}
-						
-						ComaCnt++;
 					}
 					else
-						strTemp += m_data.charAt(cnt++);
+					{
+						while(m_data.charAt(cnt) != ',')		//Name 부분
+						{
+							strTemp += m_data.charAt(cnt++);
+						}
+					}
 				}
 			}
 		}
