@@ -2,8 +2,12 @@ package
 {
 
 	import flash.geom.Point;
+	
 	import BitmapDefine;
 	
+	import RunningClip;
+	
+	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -20,12 +24,14 @@ package
 		 * _posWindow 윈도우에 클릭 된 좌표를 저장하는 변수
 		 * _childWindow 윈도우 클릭 시 생성되는 자식 윈도우의 값을 저장하는 변수
 		 * _minFlag  
-		 */		
-		private var _closeImage : Image = new Image(Texture.fromEmbeddedAsset(BitmapDefine._closePNG));
-		private var _contentsImage : Image = new Image(Texture.fromEmbeddedAsset(BitmapDefine._contentsPNG));
-		private var _minimzieImage : Image = new Image(Texture.fromEmbeddedAsset(BitmapDefine._minimziePNG));
-		private var _titleBaImage : Image = new Image(Texture.fromEmbeddedAsset(BitmapDefine._titleBarPNG));
-		private var _revertImage : Image = new Image(Texture.fromEmbeddedAsset(BitmapDefine._revertPNG));
+		 */
+		private var _cRunningClip : RunningClip = new RunningClip();
+		
+		private var _closeImage : Image;
+		private var _contentsImage : Image;
+		private var _minimzieImage : Image;
+		private var _titleBaImage : Image;
+		private var _revertImage : Image;
 		
 		private var _posWindow : Point = new Point();
 		private var _childWindow : Window = null;
@@ -41,6 +47,8 @@ package
 			_posWindow.x = posMouse.x;
 			_posWindow.y = posMouse.y;
 			
+			if(BitmapDefine.sDrawNumber == 1)drawParent();		//부모 윈도우 창 파란색, 자식 윈도우창 주황색
+			else drawChild();
 			addEventListener(Event.ADDED_TO_STAGE, drawWindow);
 		}
 		/**
@@ -69,6 +77,13 @@ package
 			_minimzieImage.y = _posWindow.y-_contentsImage.height/2;
 			_minimzieImage.addEventListener(TouchEvent.TOUCH,onClickedminimzie);
 			addChild(_minimzieImage);
+			
+			_cRunningClip.getClip().x = _contentsImage.x + _cRunningClip.getClip().width;
+			_cRunningClip.getClip().y = _contentsImage.y + _cRunningClip.getClip().height;	
+			
+			Starling.juggler.add(_cRunningClip.getClip());
+			addChild ( _cRunningClip.getClip() );
+			
 		}
 		/**
 		 * 
@@ -83,6 +98,8 @@ package
 			
 			if(touch.phase == TouchPhase.BEGAN)
 			{
+				
+				BitmapDefine.sDrawNumber = 2;
 				_childWindow = new Window(pos);
 				addChild(_childWindow);
 				trace("자식 생성");
@@ -100,6 +117,7 @@ package
 		
 			if(touch.phase == TouchPhase.MOVED)
 			{
+				this.alpha = 0.5;
 				var currentPos : Point = touch.getLocation(parent);
 				var previousPos : Point = touch.getPreviousLocation(parent);
 				var subValue : Point = currentPos.subtract(previousPos);
@@ -108,6 +126,7 @@ package
 				this.y += subValue.y; 
 				trace("이동");
 			}
+			else if(touch.phase == TouchPhase.ENDED) this.alpha = 1;	//이동 끝나면 alpah값 다시 원상 복귀
 		}
 		/**
 		 * 
@@ -122,6 +141,8 @@ package
 			if(touch.phase == TouchPhase.BEGAN)
 			{
 				this.removeFromParent(false);
+				this.removeEventListeners();
+				Starling.juggler.remove(_cRunningClip.getClip());
 				trace("삭제");
 			}
 		}
@@ -139,11 +160,11 @@ package
 			{
 				if(_minFlag == false)
 				{
-					_minimzieImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine._revertPNG));		//최소화 아이콘을 최대화로 변경
-					_minimzieImage.x = _posWindow.x+_contentsImage.width/2-_closeImage.width-_minimzieImage.width;
-					_minimzieImage.y = _posWindow.y-_contentsImage.height/2;
-					_minimzieImage.addEventListener(TouchEvent.TOUCH,onClickedminimzie);
-					addChild(_minimzieImage);
+				
+					_revertImage.x = _posWindow.x+_contentsImage.width/2-_closeImage.width-_minimzieImage.width;
+					_revertImage.y = _posWindow.y-_contentsImage.height/2;
+					_revertImage.addEventListener(TouchEvent.TOUCH,onClickedminimzie);
+					addChild(_revertImage);//최소화 아이콘을 최대화로 변경
 					
 					this._contentsImage.visible = false;
 					_minFlag = true;
@@ -152,11 +173,10 @@ package
 				}
 				else
 				{
-					_minimzieImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine._minimziePNG));		//최대화 아이콘을 최소화로 변경
 					_minimzieImage.x = _posWindow.x+_contentsImage.width/2-_closeImage.width-_minimzieImage.width;
 					_minimzieImage.y = _posWindow.y-_contentsImage.height/2;
 					_minimzieImage.addEventListener(TouchEvent.TOUCH,onClickedminimzie);
-					addChild(_minimzieImage);
+					addChild(_minimzieImage);//최대화 아이콘을 최소화로 변경
 					
 					this._contentsImage.visible = true;
 					_minFlag = false;
@@ -164,6 +184,27 @@ package
 						_childWindow.visible = true;
 				}
 			}
+		}
+		/**
+		 *Name @유영선 부모윈도우창 (파란색) 자식윈도우창(주황색) 
+		 * 
+		 */		
+		public function drawParent() : void 
+		{
+			_closeImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sClosePNG1));
+			_contentsImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sContentsPNG1));
+			_minimzieImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sMinimziePNG1));
+			_titleBaImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sTitleBarPNG1));
+			_revertImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sRevertPNG1));
+		}
+		
+		public function drawChild(): void
+		{
+			_closeImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sClosePNG2));
+			_contentsImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sContentsPNG2));
+			_minimzieImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sMinimziePNG2));
+			_titleBaImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sTitleBarPNG2));
+			_revertImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sRevertPNG2));
 		}
 	}
 }

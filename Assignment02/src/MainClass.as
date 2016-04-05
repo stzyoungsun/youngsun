@@ -3,6 +3,7 @@ package
 	import Mouse;
 	
 	import Window;
+	import BitmapDefine;
 	
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -46,6 +47,7 @@ package
 			{
 				if(touch.target == stage)
 				{
+					BitmapDefine.sDrawNumber = 1;
 					_cMouse.setMousePoint(touch.getLocation(stage));
 					_cWindow.push(new Window(_cMouse.getMousePoint()));
 					

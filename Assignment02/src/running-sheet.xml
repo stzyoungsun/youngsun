@@ -1,0 +1,7 @@
+<? xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="running-sheet.png">
+<SubTexture name="running0001" x="0" y="0" width="70" height="120"/>
+<SubTexture name="running0002" x="70" y="0" width="70" height="120"/>
+<SubTexture name="running0003" x="140" y="0" width="70" height="120"/>
+<SubTexture name="running0004" x="210" y="0" width="70" height="120"/>
+</TextureAtlas>
