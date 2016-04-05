@@ -21,7 +21,7 @@ package
 			_currentMouse.y = pos.y;	
 		}
 		
-		public function getMoisePoint() : Point
+		public function getMousePoint() : Point
 		{
 			return _currentMouse;
 		}
