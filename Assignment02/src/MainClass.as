@@ -13,8 +13,13 @@ package
 	
 	public class MainClass extends Sprite
 	{
-		private var _mMouse : Mouse = new Mouse();
-		private var _mWindow : Vector.<Window>=new Vector.<Window>; 
+		/**
+		 *Note @유영선
+		 * _mMonse 마우스 클랙스 객체
+		 * _mWindow 윈도우 클래스 객체 
+		 */		
+		private var _cMouse : Mouse = new Mouse();
+		private var _cWindow : Vector.<Window>=new Vector.<Window>; 
 		
 		public function MainClass() 
 		{
@@ -27,10 +32,6 @@ package
 			stage.addEventListener(TouchEvent.TOUCH,onClickedEvent);
 		}
 		
-		public function progress() : void
-		{
-			
-		}
 		/**
 		 * 
 		 * @param e 현재 마우스 위치
@@ -41,25 +42,17 @@ package
 		{
 			var touch:Touch = e.getTouch(stage,TouchPhase.BEGAN);
 		
-			
 			if(touch)
 			{
 				if(touch.target == stage)
 				{
-					_mMouse.setMousePoint(touch.getLocation(stage));
-					_mWindow.push(new Window(_mMouse.getMousePoint()));
+					_cMouse.setMousePoint(touch.getLocation(stage));
+					_cWindow.push(new Window(_cMouse.getMousePoint()));
 					
-					stage.addChild(_mWindow[_mWindow.length-1]);
-					trace(_mMouse.getMousePoint().x);
-					trace(_mMouse.getMousePoint().y);
+					stage.addChild(_cWindow[_cWindow.length-1]);
 				}
 				
 			}
 		}
-		/**
-		 * 
-		 * @return 클릭 한 위치에 윈도우가 있을 경우 ture 없을 경우 false
-		 * NOTE @유영선 이미 생성된 윈도우가 있는 것을 확인하는 함수
-		 */		
 	}
 }
