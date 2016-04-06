@@ -4,7 +4,7 @@ package
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	
-	import BitmapDefine;
+	import LoaderImage;
 	import PunchClip;
 	import RunningClip;
 	
@@ -16,7 +16,7 @@ package
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
-	import starling.textures.Texture;
+
 	
 	public class Window extends Sprite
 	{	
@@ -52,9 +52,9 @@ package
 		{
 			_posWindow.x = posMouse.x;
 			_posWindow.y = posMouse.y;
-			_rootFlag = BitmapDefine.sDrawNumber;
+			_rootFlag = LoaderImage.sDrawNumber;
 			
-			if(BitmapDefine.sDrawNumber == true)drawParent();		//부모 윈도우 창 파란색, 자식 윈도우창 주황색
+			if(LoaderImage.sDrawNumber == true)drawParent();		//부모 윈도우 창 파란색, 자식 윈도우창 주황색
 			else drawChild();
 			addEventListener(Event.ADDED_TO_STAGE, onDrawWindow);
 		}
@@ -66,7 +66,7 @@ package
 		public function onDrawWindow(e:Event) : void
 		{
 			_contentsImage.x = _posWindow.x-_contentsImage.width/2;
-    		_contentsImage.y = _posWindow.y-_contentsImage.height/2;
+			_contentsImage.y = _posWindow.y-_contentsImage.height/2;
 			_contentsImage.addEventListener(TouchEvent.TOUCH,onClickedcontents);
 			addChild(_contentsImage);
 		
@@ -145,7 +145,7 @@ package
 			if(touch.phase == TouchPhase.BEGAN)
 			{
 				
-				BitmapDefine.sDrawNumber = false;
+				LoaderImage.sDrawNumber = false;
 				_childWindow.push(new Window(pos));
 				addChild(_childWindow[_childWindow.length-1]);
 				_childCount++;
@@ -252,21 +252,22 @@ package
 		 * 		 */		
 		public function drawParent() : void 
 		{
-			_closeImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sClosePNG1));
-			_contentsImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sContentsPNG1));
-			_minimzieImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sMinimziePNG1));
-			_titleBaImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sTitleBarPNG1));
-			_revertImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sRevertPNG1));
+			
+			_closeImage = new Image(LoaderImage.sCloseTexture);
+			_contentsImage = new Image(LoaderImage.sContentTexture);
+			_minimzieImage = new Image(LoaderImage.sMinimizeTexture);
+			_titleBaImage = new Image(LoaderImage.sTitleTexture);
+			_revertImage = new Image(LoaderImage.sRevertTexture);
 		}
 		
 		public function drawChild(): void
 		{
 			
-			_closeImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sClosePNG2));
-			_contentsImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sContentsPNG2));
-			_minimzieImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sMinimziePNG2));
-			_titleBaImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sTitleBarPNG2));
-			_revertImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sRevertPNG2));
+			_closeImage = new Image(LoaderImage.sCloseTextureChild);
+			_contentsImage = new Image(LoaderImage.sContentTextureChild);
+			_minimzieImage = new Image(LoaderImage.sMinimizeTextureChild);
+			_titleBaImage = new Image(LoaderImage.sTitleTextureChild);
+			_revertImage = new Image(LoaderImage.sRevertTextureChild);
 		}
 		public function release() : void
 		{

@@ -1,15 +1,15 @@
 package
 {
+	import LoaderImage;
 	import Mouse;
-	
 	import Window;
-	import BitmapDefine;
 	
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.text.TextField;
 
 	
 	public class MainClass extends Sprite
@@ -21,7 +21,13 @@ package
 		 */		
 		private var _cMouse : Mouse = new Mouse();
 		private var _cWindow : Vector.<Window>=new Vector.<Window>; 
+		private var _cLoaderImage : LoaderImage;
 		
+		private  var _completeLoadImage : Function;
+		private  var _progressLoadImage : Function;
+		
+		private var _progressTextField : TextField; 
+		private var _progressText : String = "";
 		public function MainClass() 
 		{
 			addEventListener(Event.ADDED_TO_STAGE, initialize);
@@ -30,7 +36,17 @@ package
 		public function initialize() : void
 		{
 			
-			stage.addEventListener(TouchEvent.TOUCH,onClickedEvent);
+			_progressTextField = new TextField(200,200,_progressText);
+			_progressTextField.x = 400;
+			_progressTextField.y = 400;
+			_progressTextField.border = true;
+			
+			stage.addChild(_progressTextField);
+			
+			_completeLoadImage = completeLoadImage;
+			_progressLoadImage = progressLoadImage;
+			
+			_cLoaderImage = new LoaderImage(_completeLoadImage, _progressLoadImage);
 		}
 		
 		/**
@@ -47,7 +63,9 @@ package
 			{
 				if(touch.target == stage)
 				{
-					BitmapDefine.sDrawNumber = true;
+					stage.removeChild(_progressTextField);
+					
+					LoaderImage.sDrawNumber = true;
 					_cMouse.setMousePoint(touch.getLocation(stage));
 					_cWindow.push(new Window(_cMouse.getMousePoint()));
 					
@@ -55,6 +73,18 @@ package
 				}
 				
 			}
+		}
+		public function completeLoadImage() : void
+		{
+			stage.addEventListener(TouchEvent.TOUCH,onClickedEvent);
+			_progressText = "로딩 완료";
+			_progressTextField.text = _progressText;
+		}
+		public function progressLoadImage(progressCount : int) : void
+		{
+			_progressText = "로딩 중 : " + String(progressCount);
+		
+			_progressTextField.text = _progressText;	
 		}
 	}
 }
