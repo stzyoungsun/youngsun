@@ -5,9 +5,7 @@ package
 	import flash.ui.Keyboard;
 	
 	import BitmapDefine;
-	
 	import PunchClip;
-	
 	import RunningClip;
 	
 	import starling.core.Starling;
@@ -31,7 +29,6 @@ package
 		 */
 		private var _cRunningClip : RunningClip = new RunningClip();
 		private var _cPunchClip : PunchClip = new PunchClip();
-		
 		
 		private var _closeImage : Image;
 		private var _contentsImage : Image;
@@ -130,7 +127,7 @@ package
 				
 				for(var i:int=0; i < RunningClip.MAX_RUNFRAME_COUNT; i++)
 					_cRunningClip.getClip().setFrameTexture(i,RunningClip.frames[i]);
-				
+				 
 				removeChild(_cPunchClip.getClip());
 			}
 		}
@@ -252,8 +249,7 @@ package
 		}
 		/**
 		 *Name @유영선 부모윈도우창 (파란색) 자식윈도우창(주황색) 
-		 * 
-		 */		
+		 * 		 */		
 		public function drawParent() : void 
 		{
 			_closeImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sClosePNG1));
@@ -265,6 +261,7 @@ package
 		
 		public function drawChild(): void
 		{
+			
 			_closeImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sClosePNG2));
 			_contentsImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sContentsPNG2));
 			_minimzieImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sMinimziePNG2));
@@ -275,15 +272,14 @@ package
 		{
 			for(var i :int = 0; i<_childCount;i++)
 			{
-				
-				_childWindow.pop().release();
-					
+				_childWindow.pop().release();	
 			}
 			if(_rootFlag != true && _currentFlag == true )
 				Window(this.parent)._childWindow.pop();
 			
 			trace("해제");
 			
+			removeEventListener(Event.ENTER_FRAME,onFrame);
 			removeEventListener(Event.ADDED_TO_STAGE, onDrawWindow);
 			_closeImage.removeEventListener(TouchEvent.TOUCH,onClickedClose);
 			_contentsImage.removeEventListener(TouchEvent.TOUCH,onClickedcontents);

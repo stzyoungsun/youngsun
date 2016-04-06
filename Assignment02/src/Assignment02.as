@@ -11,6 +11,7 @@ package
 		public function Assignment02()
 		{
 			_starling = new Starling(MainClass, stage);
+			_starling.showStats = true;
 			_starling.start();
 		}
 		

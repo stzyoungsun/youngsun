@@ -1,6 +1,0 @@
-<? xml version="1.0" encoding="UTF-8"?>
-<TextureAtlas imagePath="punch-sheet.png">
-<SubTexture name="punch0001" x="0" y="0" width="34" height="50"/>
-<SubTexture name="punch0002" x="34" y="0" width="60" height="50"/>
-<SubTexture name="punch0003" x="94" y="0" width="80" height="50"/>
-</TextureAtlas>
