@@ -47,7 +47,7 @@ package
 			{
 				if(touch.target == stage)
 				{
-					BitmapDefine.sDrawNumber = 1;
+					BitmapDefine.sDrawNumber = true;
 					_cMouse.setMousePoint(touch.getLocation(stage));
 					_cWindow.push(new Window(_cMouse.getMousePoint()));
 					

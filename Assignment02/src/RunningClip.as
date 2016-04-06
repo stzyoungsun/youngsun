@@ -15,6 +15,9 @@ package
 		public static const _runnigSheetXML:Class;
 		
 		private var _runningClip : MovieClip;
+		public static var frames : Vector.<Texture>;
+		
+		public static const MAX_RUNFRAME_COUNT : int = 5;
 		public function RunningClip()
 		{
 			var bitmap:Bitmap = new _runnigSheet();
@@ -23,8 +26,8 @@ package
 			var xml:XML = XML(new _runnigSheetXML());
 			var sTextureAtlas:TextureAtlas = new TextureAtlas(texture, xml);
 			
-			var frames:Vector.<Texture> = sTextureAtlas.getTextures("running");
-		
+			frames = sTextureAtlas.getTextures("running");
+			
 			_runningClip = new MovieClip(frames,10);
 		}
 		
@@ -32,5 +35,6 @@ package
 		{
 			return _runningClip;
 		}
+		
 	}
 }

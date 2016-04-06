@@ -2,8 +2,11 @@ package
 {
 
 	import flash.geom.Point;
+	import flash.ui.Keyboard;
 	
 	import BitmapDefine;
+	
+	import PunchClip;
 	
 	import RunningClip;
 	
@@ -11,6 +14,7 @@ package
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.events.KeyboardEvent;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -26,6 +30,8 @@ package
 		 * _minFlag  
 		 */
 		private var _cRunningClip : RunningClip = new RunningClip();
+		private var _cPunchClip : PunchClip = new PunchClip();
+		
 		
 		private var _closeImage : Image;
 		private var _contentsImage : Image;
@@ -34,9 +40,12 @@ package
 		private var _revertImage : Image;
 		
 		private var _posWindow : Point = new Point();
-		private var _childWindow : Window = null;
+		private var _childWindow : Vector.<Window> = new  Vector.<Window>;
+		private var _childCount : int = 0;
 		
-		private var _minFlag : Boolean = false;
+		private var _minFlag : Boolean = false;		//최소화 인 경우 = ture
+		private var _rootFlag : Boolean = false;	//첫 생성 된  윈도우창 = ture
+		private var _currentFlag : Boolean = false;	//현재 선택 된 윈도우창  = ture
 		/**
 		 * 
 		 * @param posMouse 마우스가 클릭 한 위치
@@ -46,24 +55,25 @@ package
 		{
 			_posWindow.x = posMouse.x;
 			_posWindow.y = posMouse.y;
+			_rootFlag = BitmapDefine.sDrawNumber;
 			
-			if(BitmapDefine.sDrawNumber == 1)drawParent();		//부모 윈도우 창 파란색, 자식 윈도우창 주황색
+			if(BitmapDefine.sDrawNumber == true)drawParent();		//부모 윈도우 창 파란색, 자식 윈도우창 주황색
 			else drawChild();
-			addEventListener(Event.ADDED_TO_STAGE, drawWindow);
+			addEventListener(Event.ADDED_TO_STAGE, onDrawWindow);
 		}
 		/**
 		 * 
 		 * @param e
 		 * #Note @유영선 마우스 클릭 위치를 중점으로 하는 윈도우 창 출력 (창, 타이틀바, X창, 최소화 창)
 		 */		
-		public function drawWindow(e:Event) : void
+		public function onDrawWindow(e:Event) : void
 		{
 			_contentsImage.x = _posWindow.x-_contentsImage.width/2;
-			_contentsImage.y = _posWindow.y-_contentsImage.height/2;
+    		_contentsImage.y = _posWindow.y-_contentsImage.height/2;
 			_contentsImage.addEventListener(TouchEvent.TOUCH,onClickedcontents);
 			addChild(_contentsImage);
 		
-			_titleBaImage.x = _posWindow.x-_contentsImage.width/2;
+			_titleBaImage.x = _posWindow.x-_contentsImage.width/2; 
 			_titleBaImage.y = _posWindow.y-_contentsImage.height/2;
 			_titleBaImage.addEventListener(TouchEvent.TOUCH,onClickedtitleBar);
 			addChild(_titleBaImage);
@@ -81,9 +91,48 @@ package
 			_cRunningClip.getClip().x = _contentsImage.x + _cRunningClip.getClip().width;
 			_cRunningClip.getClip().y = _contentsImage.y + _cRunningClip.getClip().height;	
 			
-			Starling.juggler.add(_cRunningClip.getClip());
-			addChild ( _cRunningClip.getClip() );
+			stage.addEventListener(KeyboardEvent.KEY_DOWN,onKeyDownEvent);
 			
+			Starling.juggler.add(_cRunningClip.getClip());	//애니매이션 시작
+			addChild ( _cRunningClip.getClip() );
+		}
+		/**
+		 * 
+		 * @param e
+		 * Note @유영선 Space입력 시 펀치 발사 부분
+		 * 펀치의 시작 화면은 캐릭터의 위치에서 약간 조절
+		 * 위치 설정 후 애니매이션 시작
+		 */		
+		private function onKeyDownEvent(e:KeyboardEvent) : void
+		{
+			 
+			if(e.keyCode == Keyboard.SPACE)
+ 			{
+				for(var i:int=0; i < RunningClip.MAX_RUNFRAME_COUNT; i++)
+					_cRunningClip.getClip().setFrameTexture(i,RunningClip.frames[4]);
+				
+				_cPunchClip.getClip().x = _cRunningClip.getClip().x + 50;
+				_cPunchClip.getClip().y = _cRunningClip.getClip().y + 10;
+				
+ 				Starling.juggler.add(_cPunchClip.getClip());	//애니매이션 시작
+				
+				addChild ( _cPunchClip.getClip() ); 
+				addEventListener(Event.ENTER_FRAME,onFrame);
+			}
+		}
+		
+		private function onFrame(e:Event) : void
+		{
+			_cPunchClip.getClip().x+=5;
+			if(_cPunchClip.getClip().x > 2*_posWindow.x- _cRunningClip.getClip().x)
+			{
+				removeEventListener(Event.ENTER_FRAME,onFrame);
+				
+				for(var i:int=0; i < RunningClip.MAX_RUNFRAME_COUNT; i++)
+					_cRunningClip.getClip().setFrameTexture(i,RunningClip.frames[i]);
+				
+				removeChild(_cPunchClip.getClip());
+			}
 		}
 		/**
 		 * 
@@ -99,9 +148,10 @@ package
 			if(touch.phase == TouchPhase.BEGAN)
 			{
 				
-				BitmapDefine.sDrawNumber = 2;
-				_childWindow = new Window(pos);
-				addChild(_childWindow);
+				BitmapDefine.sDrawNumber = false;
+				_childWindow.push(new Window(pos));
+				addChild(_childWindow[_childWindow.length-1]);
+				_childCount++;
 				trace("자식 생성");
 			}
 		}
@@ -131,7 +181,7 @@ package
 		/**
 		 * 
 		 * @param e 마우스 클릭 위치
-		 * #Note @유영선 종료 아이콘 클릭 시 부모, 자식 윈도우 종료
+		 * #Note @유영선 종료 아이콘 클릭 시 부모, 자식 윈도우 종료, 리스너, 애니매이션 제거
 		 */	
 		private function onClickedClose(e:TouchEvent): void
 		{
@@ -140,10 +190,9 @@ package
 			
 			if(touch.phase == TouchPhase.BEGAN)
 			{
-				this.removeFromParent(false);
-				this.removeEventListeners();
-				Starling.juggler.remove(_cRunningClip.getClip());
-				trace("삭제");
+				_childCount = _childWindow.length;
+				_currentFlag = 1;
+				release();
 			}
 		}
 		/**
@@ -163,25 +212,41 @@ package
 				
 					_revertImage.x = _posWindow.x+_contentsImage.width/2-_closeImage.width-_minimzieImage.width;
 					_revertImage.y = _posWindow.y-_contentsImage.height/2;
+					
+					_minimzieImage.removeEventListener(TouchEvent.TOUCH,onClickedminimzie);
 					_revertImage.addEventListener(TouchEvent.TOUCH,onClickedminimzie);
+					removeChild(_minimzieImage,false);
+					
 					addChild(_revertImage);//최소화 아이콘을 최대화로 변경
 					
-					this._contentsImage.visible = false;
+					_contentsImage.visible = false;
+					_cRunningClip.getClip().visible = false;
 					_minFlag = true;
-					if(_childWindow != null)
-						_childWindow.visible = false;
+					
+					for(var i :int = 0; i<_childWindow.length;i++)
+					{
+						_childWindow[i].visible = false;
+					}
+				
 				}
 				else
 				{
 					_minimzieImage.x = _posWindow.x+_contentsImage.width/2-_closeImage.width-_minimzieImage.width;
 					_minimzieImage.y = _posWindow.y-_contentsImage.height/2;
+					
+					_revertImage.removeEventListener(TouchEvent.TOUCH,onClickedminimzie);
 					_minimzieImage.addEventListener(TouchEvent.TOUCH,onClickedminimzie);
+					removeChild(_revertImage,false);
 					addChild(_minimzieImage);//최대화 아이콘을 최소화로 변경
 					
-					this._contentsImage.visible = true;
+					_contentsImage.visible = true;
+					_cRunningClip.getClip().visible = true;
 					_minFlag = false;
-					if(_childWindow != null)
-						_childWindow.visible = true;
+					
+					for(var j :int = 0; j<_childWindow.length;j++)
+					{
+						_childWindow[j].visible = true;
+					}
 				}
 			}
 		}
@@ -205,6 +270,27 @@ package
 			_minimzieImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sMinimziePNG2));
 			_titleBaImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sTitleBarPNG2));
 			_revertImage = new Image(Texture.fromEmbeddedAsset(BitmapDefine.sRevertPNG2));
+		}
+		public function release() : void
+		{
+			for(var i :int = 0; i<_childCount;i++)
+			{
+				
+				_childWindow.pop().release();
+					
+			}
+			if(_rootFlag != true && _currentFlag == true )
+				Window(this.parent)._childWindow.pop();
+			
+			trace("해제");
+			
+			removeEventListener(Event.ADDED_TO_STAGE, onDrawWindow);
+			_closeImage.removeEventListener(TouchEvent.TOUCH,onClickedClose);
+			_contentsImage.removeEventListener(TouchEvent.TOUCH,onClickedcontents);
+			_titleBaImage.removeEventListener(TouchEvent.TOUCH,onClickedtitleBar);
+			_minimzieImage.removeEventListener(TouchEvent.TOUCH,onClickedminimzie);
+			_revertImage.removeEventListener(TouchEvent.TOUCH,onClickedminimzie);
+			removeChildren();
 		}
 	}
 }
