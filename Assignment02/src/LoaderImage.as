@@ -38,18 +38,6 @@ package
 		public static var sRevertTextureChild : Texture;
 		public static var sMinimizeTextureChild : Texture;
 		
-		private var _urlContents : URLRequest = new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/contents.png");
-		private var _urlClose : URLRequest = new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/close.png");
-		private var _urlTitleBar : URLRequest = new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/titleBar.png");
-		private var _urlRevert : URLRequest = new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/revert.png");
-		private var _urlMinimize : URLRequest = new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/minimize.png");
-		
-		private var _urlContentsChild : URLRequest = new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/contents2.png");
-		private var _urlCloseChild : URLRequest = new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/close2.png");
-		private var _urlTitleBarChild : URLRequest = new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/titleBar2.png");
-		private var _urlRevertChild : URLRequest = new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/revert2.png");
-		private var _urlMinimizeChild : URLRequest = new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/minimize2.png");
-		
 		private var _completeFunction:Function;
 		private var _progressFunction:Function;
 		
@@ -58,34 +46,34 @@ package
 		{
 			
 			_contentloader.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleateContent);
-			_contentloader.load(_urlContents);
+			_contentloader.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/contents.png"));
 				
 			_closeloader.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleateClose);
-			_closeloader.load(_urlClose);
+			_closeloader.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/close.png"));
 				
 			_titleloader.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleateTitlebar);
-			_titleloader.load(_urlTitleBar);
+			_titleloader.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/titleBar.png"));
 				
 			_revertloader.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleateRevert);
-			_revertloader.load(_urlRevert);
+			_revertloader.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/revert.png"));
 			
 			_minimizeloader.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleateMinimize);
-			_minimizeloader.load(_urlMinimize);
+			_minimizeloader.load( new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/minimize.png"));
 			
 			_contentloaderChild.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleateContentChild);
-			_contentloaderChild.load(_urlContentsChild);
+			_contentloaderChild.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/contents2.png"));
 			
 			_closeloaderChild.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleateCloseChild);
-			_closeloaderChild.load(_urlCloseChild);
+			_closeloaderChild.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/close2.png"));
 			
 			_titleloaderChild.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleateTitlebarChild);
-			_titleloaderChild.load(_urlTitleBarChild);
+			_titleloaderChild.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/titleBar2.png"));
 			
 			_revertloaderChild.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleateRevertChild);
-			_revertloaderChild.load(_urlRevertChild);
+			_revertloaderChild.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/revert2.png"));
 			
 			_minimizeloaderChild.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleateMinimizeChild);
-			_minimizeloaderChild.load(_urlMinimizeChild);
+			_minimizeloaderChild.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/minimize2.png"));
 			
 			_completeFunction = completeFunction;
 			_progressFunction = progressFunction;
@@ -113,7 +101,7 @@ package
 			
 			_bitmap = e.currentTarget.loader.content as Bitmap;;
 			sTitleTexture = Texture.fromBitmap(_bitmap);
-			e.currentTarget.loader.removeEventListener(Event.COMPLETE, onCompleateClose);
+			e.currentTarget.loader.removeEventListener(Event.COMPLETE, onCompleateTitlebar);
 			chedckedImageCount();
 		}
 		private function onCompleateRevert(e:Event) : void
@@ -121,7 +109,7 @@ package
 			
 			_bitmap = e.currentTarget.loader.content as Bitmap;
 			sRevertTexture = Texture.fromBitmap(_bitmap);
-			e.currentTarget.loader.removeEventListener(Event.COMPLETE, onCompleateClose);
+			e.currentTarget.loader.removeEventListener(Event.COMPLETE, onCompleateRevert);
 			chedckedImageCount();
 		}
 		private function onCompleateMinimize(e:Event) : void
@@ -129,7 +117,7 @@ package
 			
 			_bitmap = e.currentTarget.loader.content as Bitmap;
 			sMinimizeTexture = Texture.fromBitmap(_bitmap);
-			e.currentTarget.loader.removeEventListener(Event.COMPLETE, onCompleateClose);
+			e.currentTarget.loader.removeEventListener(Event.COMPLETE, onCompleateMinimize);
 			chedckedImageCount();
 		}
 		
@@ -138,7 +126,7 @@ package
 			_bitmap = e.currentTarget.loader.content as Bitmap;
 			trace(_bitmap);
 			sContentTextureChild = Texture.fromBitmap(_bitmap);
-			e.currentTarget.loader.removeEventListener(Event.COMPLETE, onCompleateContent);
+			e.currentTarget.loader.removeEventListener(Event.COMPLETE, onCompleateContentChild);
 			
 			chedckedImageCount();
 		}
@@ -147,7 +135,7 @@ package
 			
 			_bitmap = e.currentTarget.loader.content as Bitmap;
 			sCloseTextureChild = Texture.fromBitmap(_bitmap);
-			e.currentTarget.loader.removeEventListener(Event.COMPLETE, onCompleateClose);
+			e.currentTarget.loader.removeEventListener(Event.COMPLETE, onCompleateCloseChild);
 			chedckedImageCount();
 		}
 		private function onCompleateTitlebarChild(e:Event) : void
@@ -155,7 +143,7 @@ package
 			
 			_bitmap = e.currentTarget.loader.content as Bitmap;;
 			sTitleTextureChild = Texture.fromBitmap(_bitmap);
-			e.currentTarget.loader.removeEventListener(Event.COMPLETE, onCompleateClose);
+			e.currentTarget.loader.removeEventListener(Event.COMPLETE, onCompleateTitlebarChild);
 			chedckedImageCount();
 		}
 		private function onCompleateRevertChild(e:Event) : void
@@ -163,7 +151,7 @@ package
 			
 			_bitmap = e.currentTarget.loader.content as Bitmap;
 			sRevertTextureChild = Texture.fromBitmap(_bitmap);
-			e.currentTarget.loader.removeEventListener(Event.COMPLETE, onCompleateClose);
+			e.currentTarget.loader.removeEventListener(Event.COMPLETE, onCompleateRevertChild);
 			chedckedImageCount();
 		}
 		private function onCompleateMinimizeChild(e:Event) : void
@@ -171,7 +159,7 @@ package
 			
 			_bitmap = e.currentTarget.loader.content as Bitmap;
 			sMinimizeTextureChild = Texture.fromBitmap(_bitmap);
-			e.currentTarget.loader.removeEventListener(Event.COMPLETE, onCompleateClose);
+			e.currentTarget.loader.removeEventListener(Event.COMPLETE, onCompleateMinimizeChild);
 			chedckedImageCount();
 		}
 		private function chedckedImageCount() : void
