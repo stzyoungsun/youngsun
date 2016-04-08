@@ -46,34 +46,34 @@ package
 		{
 			
 			_contentloader.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleateContent);
-			_contentloader.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/contents.png"));
+			_contentloader.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/bin-debug/GUI_resources/contents.png"));
 				
 			_closeloader.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleateClose);
-			_closeloader.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/close.png"));
+			_closeloader.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/bin-debug/GUI_resources/close.png"));
 				
 			_titleloader.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleateTitlebar);
-			_titleloader.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/titleBar.png"));
+			_titleloader.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/bin-debug/GUI_resources/titleBar.png"));
 				
 			_revertloader.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleateRevert);
-			_revertloader.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/revert.png"));
+			_revertloader.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/bin-debug/GUI_resources/revert.png"));
 			
 			_minimizeloader.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleateMinimize);
-			_minimizeloader.load( new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/minimize.png"));
+			_minimizeloader.load( new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/bin-debug/GUI_resources/minimize.png"));
 			
 			_contentloaderChild.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleateContentChild);
-			_contentloaderChild.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/contents2.png"));
+			_contentloaderChild.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/bin-debug/GUI_resources/contents2.png"));
 			
 			_closeloaderChild.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleateCloseChild);
-			_closeloaderChild.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/close2.png"));
+			_closeloaderChild.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/bin-debug/GUI_resources/close2.png"));
 			
 			_titleloaderChild.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleateTitlebarChild);
-			_titleloaderChild.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/titleBar2.png"));
+			_titleloaderChild.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/bin-debug/GUI_resources/titleBar2.png"));
 			
 			_revertloaderChild.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleateRevertChild);
-			_revertloaderChild.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/revert2.png"));
+			_revertloaderChild.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/bin-debug/GUI_resources/revert2.png"));
 			
 			_minimizeloaderChild.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleateMinimizeChild);
-			_minimizeloaderChild.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/src/GUI_resources/minimize2.png"));
+			_minimizeloaderChild.load(new URLRequest("https://raw.githubusercontent.com/stzyoungsun/youngsun/master/Assignment02/bin-debug/GUI_resources/minimize2.png"));
 			
 			_completeFunction = completeFunction;
 			_progressFunction = progressFunction;
