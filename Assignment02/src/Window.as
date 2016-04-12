@@ -5,7 +5,9 @@ package
 	import flash.ui.Keyboard;
 	
 	import LoaderImage;
+	
 	import PunchClip;
+	
 	import RunningClip;
 	
 	import starling.core.Starling;
@@ -38,7 +40,6 @@ package
 		
 		private var _posWindow : Point = new Point();
 		private var _childWindow : Vector.<Window> = new  Vector.<Window>;
-		private var _childCount : int = 0;
 		
 		private var _minFlag : Boolean = false;		//최소화 인 경우 = ture
 		private var _rootFlag : Boolean = false;	//첫 생성 된  윈도우창 = ture
@@ -48,13 +49,13 @@ package
 		 * @param posMouse 마우스가 클릭 한 위치
 		 * #Note @유영선 마우스 좌표를 받아서 Window 객체 생성 후 윈도우 창이 오류 없이 열렸다면 darwWindow 호출
 		 */		
-		public function Window(posMouse : Point)
+		public function Window(posMouse : Point, rootFlag: Boolean)
 		{
 			_posWindow.x = posMouse.x;
 			_posWindow.y = posMouse.y;
-			_rootFlag = LoaderImage.sDrawNumber;
+			_rootFlag = rootFlag;
 			
-			if(LoaderImage.sDrawNumber == true)drawParent();		//부모 윈도우 창 파란색, 자식 윈도우창 주황색
+			if(_rootFlag == true)drawParent();		//부모 윈도우 창 파란색, 자식 윈도우창 주황색
 			else drawChild();
 			addEventListener(Event.ADDED_TO_STAGE, onDrawWindow);
 		}
@@ -67,21 +68,26 @@ package
 		{
 			_contentsImage.x = _posWindow.x-_contentsImage.width/2;
 			_contentsImage.y = _posWindow.y-_contentsImage.height/2;
+			if(_contentsImage.x < 0 ) _contentsImage.x = 0;
+			if(_contentsImage.y < _titleBaImage.height ) _contentsImage.y = _titleBaImage.height;
+			
+			if(_contentsImage.x > stage.stageWidth - _contentsImage.width) _contentsImage.x = stage.stageWidth - _contentsImage.width;
+	
 			_contentsImage.addEventListener(TouchEvent.TOUCH,onClickedcontents);
 			addChild(_contentsImage);
 		
-			_titleBaImage.x = _posWindow.x-_contentsImage.width/2; 
-			_titleBaImage.y = _posWindow.y-_contentsImage.height/2;
+			_titleBaImage.x = _contentsImage.x;
+			_titleBaImage.y = _contentsImage.y-_titleBaImage.height;
 			_titleBaImage.addEventListener(TouchEvent.TOUCH,onClickedtitleBar);
 			addChild(_titleBaImage);
 			
-			_closeImage.x = _posWindow.x+_contentsImage.width/2-_closeImage.width;
-			_closeImage.y = _posWindow.y-_contentsImage.height/2;
+			_closeImage.x = _titleBaImage.x+_contentsImage.width-_closeImage.width;
+			_closeImage.y = _titleBaImage.y;
 			_closeImage.addEventListener(TouchEvent.TOUCH,onClickedClose);
 			addChild(_closeImage);
 			
-			_minimzieImage.x = _posWindow.x+_contentsImage.width/2-_closeImage.width-_minimzieImage.width;
-			_minimzieImage.y = _posWindow.y-_contentsImage.height/2;
+			_minimzieImage.x = _closeImage.x-_minimzieImage.width;
+			_minimzieImage.y = _titleBaImage.y;
 			_minimzieImage.addEventListener(TouchEvent.TOUCH,onClickedminimzie);
 			addChild(_minimzieImage);
 			
@@ -145,10 +151,8 @@ package
 			if(touch.phase == TouchPhase.BEGAN)
 			{
 				
-				LoaderImage.sDrawNumber = false;
-				_childWindow.push(new Window(pos));
+				_childWindow.push(new Window(pos,false));
 				addChild(_childWindow[_childWindow.length-1]);
-				_childCount++;
 				trace("자식 생성");
 			}
 		}
@@ -187,7 +191,6 @@ package
 			
 			if(touch.phase == TouchPhase.BEGAN)
 			{
-				_childCount = _childWindow.length;
 				_currentFlag = 1;
 				release();
 			}
@@ -207,8 +210,8 @@ package
 				if(_minFlag == false)
 				{
 				
-					_revertImage.x = _posWindow.x+_contentsImage.width/2-_closeImage.width-_minimzieImage.width;
-					_revertImage.y = _posWindow.y-_contentsImage.height/2;
+					_revertImage.x = _closeImage.x-_minimzieImage.width;;
+					_revertImage.y = _titleBaImage.y;
 					
 					_minimzieImage.removeEventListener(TouchEvent.TOUCH,onClickedminimzie);
 					_revertImage.addEventListener(TouchEvent.TOUCH,onClickedminimzie);
@@ -228,8 +231,8 @@ package
 				}
 				else
 				{
-					_minimzieImage.x = _posWindow.x+_contentsImage.width/2-_closeImage.width-_minimzieImage.width;
-					_minimzieImage.y = _posWindow.y-_contentsImage.height/2;
+					_minimzieImage.x = _closeImage.x-_minimzieImage.width;
+					_minimzieImage.y = _titleBaImage.y;
 					
 					_revertImage.removeEventListener(TouchEvent.TOUCH,onClickedminimzie);
 					_minimzieImage.addEventListener(TouchEvent.TOUCH,onClickedminimzie);
@@ -271,10 +274,9 @@ package
 		}
 		public function release() : void
 		{
-			for(var i :int = 0; i<_childCount;i++)
-			{
+			while(0 < _childWindow.length)
 				_childWindow.pop().release();	
-			}
+			
 			if(_rootFlag != true && _currentFlag == true )
 				Window(this.parent)._childWindow.pop();
 			

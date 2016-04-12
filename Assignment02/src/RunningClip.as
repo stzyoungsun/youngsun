@@ -8,6 +8,7 @@ package
 	
 	public class RunningClip
 	{
+		
 		[Embed(source = "running-sheet.png")]
 		public static const _runnigSheet:Class;
 		
@@ -20,6 +21,7 @@ package
 		public static const MAX_RUNFRAME_COUNT : int = 5;
 		public function RunningClip()
 		{
+			
 			var bitmap:Bitmap = new _runnigSheet();
 			var texture:Texture = Texture.fromBitmap(bitmap);
 			

@@ -45,7 +45,6 @@ package
 		private var _completeFunction:Function;
 		private var _progressFunction:Function;
 		
-		public static var sDrawNumber: Boolean = false;
 		public function LoaderImage(completeFunction:Function, progressFunction : Function)
 		{
 			

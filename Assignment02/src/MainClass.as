@@ -65,9 +65,8 @@ package
 				{
 					stage.removeChild(_progressTextField);
 					
-					LoaderImage.sDrawNumber = true;
 					_cMouse.setMousePoint(touch.getLocation(stage));
-					_cWindow.push(new Window(_cMouse.getMousePoint()));
+					_cWindow.push(new Window(_cMouse.getMousePoint(),true));
 					
 					stage.addChild(_cWindow[_cWindow.length-1]);
 				}
