@@ -1,9 +1,13 @@
 package
 {
-
+	/**
+	 * 
+	 * @author user
+	 * Note @유영선 LoaderImage 클래스는 3번과제에 완전하게 수정하였습니다. 여기 부분의 하드코딩으로 마지막날에 급하게 한다고 이렇게 되었습니다 죄송합니다
+	 */
 	public class LoaderImage
 	{
-		import starling.display.Image;
+
 		import starling.textures.Texture;
 		
 		import flash.display.Bitmap;
